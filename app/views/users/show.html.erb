@@ -1,0 +1,7 @@
+<h1><%= "#{@user.first_name}'s Ideas"%></h1>
+
+<ul>
+  <% @ideas.each do |idea| %>
+    <li><%= link_to "#{idea.idea}", idea_path(idea) %></li>
+  <% end %>
+</ul>

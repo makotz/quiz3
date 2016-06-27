@@ -1,0 +1,29 @@
+<h1><%= @idea.idea %></h1>
+<h2>By <%= link_to "#{@owner.first_name}", user_path(@owner) %></h2>
+<h3>Members:</h3>
+<ul>
+  <% @members.each do |member| %>
+    <li><%= User.find(member.user_id).full_name %></li>
+  <% end %>
+</ul>
+<h3>Total Likes: <%= @likes %></h3>
+
+<% if user_signed_in? %>
+  <% if can? :manage, @idea %>
+    <%= link_to "Edit", edit_idea_path(@idea) %>
+    <%= link_to "Delete", idea_path(@idea), method: :delete %>
+  <% else %>
+    <% if @idea.liked_by?(current_user) %>
+      <%= link_to "Unlike", idea_like_path(@idea, @idea.like_for(current_user)), method: :delete %>
+    <% else %>
+      <%= link_to "Like", idea_likes_path(@idea), method: :post %>
+    <% end %>
+    <% if @idea.member_of?(current_user) %>
+      <%= link_to "Not be a member", idea_member_path(@idea, @idea.member_for(current_user)), method: :delete %>
+    <% else %>
+      <%= link_to "Join as member!", idea_members_path(@idea), method: :post %>
+    <% end %>
+  <% end %>
+<% end %>
+<br>
+<p><%= @idea.details %></p>

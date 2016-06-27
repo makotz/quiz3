@@ -1,0 +1,26 @@
+<h1>All Ideas</h1>
+
+<% @ideas.each do |idea| %>
+  <h3><%= link_to "#{idea.idea}", idea_path(idea) %></h3><br>
+  <%= idea.details %><br>
+  <%= link_to "#{User.find(idea.user).first_name}", user_path(idea.user) %></h2>
+  <% if user_signed_in? %>
+    <% if can? :manage, idea %>
+      <% link_to "Edit", edit_idea_path(idea) %>
+      <% link_to "Delete", idea_path(idea), method: :delete %>
+    <% else %>
+      <% if idea.liked_by?(current_user) %>
+        <%= link_to "Unlike", idea_like_path(idea, idea.like_for(current_user)), method: :delete %>
+      <% else %>
+        <%= link_to "Like", idea_likes_path(idea), method: :post %>
+      <% end %>
+      <% if idea.member_of?(current_user) %>
+        <%= link_to "Joined", idea_member_path(idea, idea.member_for(current_user)), method: :delete %>
+      <% else %>
+        <%= link_to "Join", idea_members_path(idea), method: :post %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= "Members: #{idea.members.count} | Likes: #{idea.likes.count}"%>
+  <hr>
+<% end %>

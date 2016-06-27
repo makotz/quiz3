@@ -1,0 +1,12 @@
+<%= form_for @idea do |i| %>
+  <div>
+    <%= i.label :idea %>
+    <%= i.text_field :idea %>
+  <div>
+  <div>
+    <%= i.label :details %>
+    <%= i.text_field :details %>
+  <div>
+  <%= i.submit %>
+<% end %>
+  
